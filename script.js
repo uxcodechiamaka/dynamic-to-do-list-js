@@ -1,28 +1,51 @@
-function addTask() {
-  const taskText = taskInput.value.trim();
-  if (taskText === "") {
-    alert("Please enter a task!");
-    return;
-  }
+// Wait for the DOM to fully load
+document.addEventListener('DOMContentLoaded', function () {
+    // Select DOM elements
+    const addButton = document.getElementById('add-task-btn');
+    const taskInput = document.getElementById('task-input');
+    const taskList = document.getElementById('task-list');
 
-  // ✅ Create li and set text
-  const li = document.createElement('li');
-  li.textContent = taskText;
+    // Define the addTask function
+    function addTask() {
+        const taskText = taskInput.value.trim(); // Get and trim the task input
 
-  // ✅ Create Remove button
-  const removeBtn = document.createElement('button');
-  removeBtn.textContent = 'Remove';
-  removeBtn.classList.add('remove-btn'); // ✅ USE classList.add here
+        // Check if input is not empty
+        if (taskText === '') {
+            alert('Please enter a task.');
+            return;
+        }
 
-  // ✅ When clicked, remove this li
-  removeBtn.onclick = function() {
-    taskList.removeChild(li);
-  };
+        // Create a new list item for the task
+        const li = document.createElement('li');
+        li.textContent = taskText;
 
-  // ✅ Add button to li and li to list
-  li.appendChild(removeBtn);
-  taskList.appendChild(li);
+        // Create a remove button
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        removeButton.classList.add('remove-btn');
 
-  // ✅ Clear the input field
-  taskInput.value = '';
-}
+        // Set the remove button's event listener
+        removeButton.onclick = function () {
+            taskList.removeChild(li);
+        };
+
+        // Append the remove button to the task
+        li.appendChild(removeButton);
+
+        // Add the task to the list
+        taskList.appendChild(li);
+
+        // Clear the input field
+        taskInput.value = '';
+    }
+
+    // Add event listener to button
+    addButton.addEventListener('click', addTask);
+
+    // Add event listener for Enter key
+    taskInput.addEventListener('keypress', function (event) {
+        if (event.key === 'Enter') {
+            addTask();
+        }
+    });
+});
