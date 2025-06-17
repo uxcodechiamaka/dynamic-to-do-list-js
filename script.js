@@ -1,49 +1,32 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const addButton = document.getElementById('add-task-btn');
-  const taskInput = document.getElementById('task-input');
-  const taskList = document.getElementById('task-list');
+// Inside your DOMContentLoaded block…
 
-  function addTask() {
-    const taskText = taskInput.value.trim();
-    if (taskText === "") {
-      alert("Please enter a task!");
-      return;
-    }
-    const li = document.createElement('li');
-    li.textContent = taskText;
-    const removeBtn = document.createElement('button');
-    removeBtn.textContent = 'Remove';
-    removeBtn.className = 'remove-btn';
-    removeBtn.onclick = function() {
-      taskList.removeChild(li);
-      updateLocalStorage();
-    };
-    li.appendChild(removeBtn);
-    taskList.appendChild(li);
-    taskInput.value = '';
-    updateLocalStorage();
+function addTask() {
+  const taskText = taskInput.value.trim();
+  if (taskText === "") {
+    alert("Please enter a task!");
+    return;
   }
 
-  function updateLocalStorage() {
-    const tasks = [];
-    document.querySelectorAll('#task-list li').forEach(li => {
-      tasks.push(li.firstChild.textContent);
-    });
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }
+  // ✅ Create a new list item (li) with task text
+  const li = document.createElement('li');
+  li.textContent = taskText;
 
-  function loadTasks() {
-    const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    tasks.forEach(text => {
-      taskInput.value = text;
-      addTask();
-    });
-  }
+  // ✅ Create a Remove button with the 'remove-btn' class
+  const removeBtn = document.createElement('button');
+  removeBtn.textContent = 'Remove';
+  removeBtn.className = 'remove-btn';
 
-  addButton.addEventListener('click', addTask);
-  taskInput.addEventListener('keypress', function(event) {
-    if (event.key === 'Enter') addTask();
-  });
+  // ✅ When the Remove button is clicked, only remove its li
+  removeBtn.onclick = function() {
+    li.remove(); // removes THIS list item only :contentReference[oaicite:1]{index=1}
+    updateLocalStorage(); // save updated list
+  };
 
-  loadTasks();
-});
+  // ✅ Add the Remove button to the list item
+  li.appendChild(removeBtn);
+  // ✅ Add the list item to the task list
+  taskList.appendChild(li);
+
+  taskInput.value = '';         // Clear input
+  updateLocalStorage();        // Save to localStorage
+}
